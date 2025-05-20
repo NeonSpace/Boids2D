@@ -10,10 +10,17 @@ Boid::Boid(int id, sf::Vector2f pos, sf::Vector2f vel) {
     this->id = id;
     this->pos = pos;
     this->vel = vel;
-
 }
-int Boid::getID() {
+
+Boid::Boid() {
+}
+
+int Boid::getID() const {
     return id;
+}
+
+void Boid::setID(int id) {
+    this->id = id;
 }
 
 sf::Vector2f Boid::getPos() const {
