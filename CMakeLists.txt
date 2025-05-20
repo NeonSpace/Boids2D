@@ -9,6 +9,7 @@ add_executable(Boids2D main.cpp
         Simulation2D.hpp
         Boid.cpp
         Boid.hpp
+        customEnums.hpp
 )
 
 target_link_libraries(Boids2D sfml-graphics sfml-window sfml-system)

@@ -9,12 +9,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include "Boid.hpp"
-
-enum class arrangementType {
-    rand,
-    quadratic,
-    circular
-};
+#include "customEnums.hpp"
 
 
 class Simulation2D {
@@ -33,7 +28,7 @@ public:
 
 
     void evolve();
-    void draw();
+    void draw(float radius);
 
 private:
     int width, height, amount = 0;

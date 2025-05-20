@@ -1,7 +1,8 @@
 //
 // Created by l on 14.05.25.
 //
-
+#include <iostream>
+#include <cmath>
 #include "Simulation2D.hpp"
 #include <SFML/Graphics.hpp>
 
@@ -20,16 +21,31 @@ void Simulation2D::init(arrangementType aT, int amount) {
                 float fx = static_cast<float>(rand()) / RAND_MAX;
                 float fy = static_cast<float>(rand()) / RAND_MAX;
                 boids.at(i).setPos(sf::Vector2f(fx * width, fy * height));
-                boids.at(i).setVel(sf::Vector2f(fx, fy));
+                boids.at(i).setVel(sf::Vector2f(0, 0));
             }
             break;
         }
         case arrangementType::quadratic: {
-            for (int i = 0; i < amount; i++) {
-                boids.at(i).setID(i);
-                boids.at(i).setPos(sf::Vector2f( 10+i*4, 10+i*4));
-                boids.at(i).setVel(sf::Vector2f(0, 0));
+            double amountPerLine = std::round(std::sqrt(amount));
+
+            std::cout << amountPerLine << std::endl;
+            double distance = width / amountPerLine;
+            std::cout << distance << std::endl;
+            int currentID = 0;
+
+            for (int i = 0; i < amountPerLine; i++) {
+                for (int j = 0; j < amountPerLine; j++) {
+                    boids.at(currentID).setID(currentID);
+                    boids.at(currentID).setPos(sf::Vector2f( i*distance, j*distance));
+                    boids.at(currentID).setVel(sf::Vector2f(0, 0));
+                    currentID++;
+                }
             }
+            break;
+        }
+        case arrangementType::circular: {
+
+
             break;
         }
     }
@@ -52,32 +68,41 @@ void Simulation2D::evolve() {
         }
         boids.at(i).setPos(sf::Vector2f(newPosX, newPosY));
     }*/
-
+/*
     for (int i = 0; i < boids.size(); i++) {
         float newPosX = 0;
         float newPosY = 0;
-        float posChangeX= -0.5 + static_cast<float>(rand()) / RAND_MAX;
-        float posChangeY= -0.5 + static_cast<float>(rand()) / RAND_MAX;
+        float posChangeX= -1 + 2*static_cast<float>(rand()) / RAND_MAX;
+        float posChangeY= -1 + 2*static_cast<float>(rand()) / RAND_MAX;
 
         if (boids.at(i).getPos().x+posChangeX > width) {
             newPosX = width - boids.at(i).getPos().x+posChangeX;
-        }else {
+        }else if (boids.at(i).getPos().x+posChangeX < 0) {
+            newPosX = width + boids.at(i).getPos().x+posChangeX;
+        }
+        else {
             newPosX = boids.at(i).getPos().x+posChangeX;
         }
+
         if (boids.at(i).getPos().y+posChangeY > height) {
             newPosY = height - boids.at(i).getPos().y+posChangeY;
-        }else {
+        }else if (boids.at(i).getPos().y+posChangeY < 0) {
+            newPosY = height + boids.at(i).getPos().y+posChangeY;
+        }
+        else{
             newPosY = boids.at(i).getPos().y+posChangeY;
         }
         boids.at(i).setPos(sf::Vector2f(newPosX, newPosY));
-    }
+    }*/
 }
 
-void Simulation2D::draw() {
+void Simulation2D::draw(float radius) {
     for (int i = 0; i < boids.size(); i++) {
-        sf::CircleShape boidShape(3);
+        sf::CircleShape boidShape(radius);
         boidShape.setFillColor(sf::Color::Blue);
-        boidShape.setPosition(boids.at(i).getPos());
+        float shapePosX = boids.at(i).getPos().x - radius;
+        float shapePosY = boids.at(i).getPos().y - radius;
+        boidShape.setPosition(shapePosX, shapePosY);
 
         window.draw(boidShape);
     }

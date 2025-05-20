@@ -10,8 +10,7 @@ class Boid {
 public:
     Boid(int id, sf::Vector2f pos, sf::Vector2f vel = sf::Vector2f(0,0));
 
-    Boid();
-
+    Boid() = default;
     ~Boid() = default;
 
     int getID() const;
@@ -27,7 +26,7 @@ public:
 private:
     sf::Vector2f pos;
     sf::Vector2f vel;
-    int id;
+    int id=0;
 
 };
 

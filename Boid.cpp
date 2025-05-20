@@ -12,8 +12,6 @@ Boid::Boid(int id, sf::Vector2f pos, sf::Vector2f vel) {
     this->vel = vel;
 }
 
-Boid::Boid() {
-}
 
 int Boid::getID() const {
     return id;
