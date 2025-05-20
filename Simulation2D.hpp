@@ -33,6 +33,7 @@ public:
 
 
     void evolve();
+    void draw();
 
 private:
     int width, height, amount = 0;
