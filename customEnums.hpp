@@ -20,4 +20,8 @@ enum class movementType {
     swarm_circular
 };
 
+enum class coordinateType {
+    cartesian,
+    polar
+};
 #endif //CUSTOMENUMS_HPP

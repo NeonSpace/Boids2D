@@ -10,6 +10,8 @@ add_executable(Boids2D main.cpp
         Boid.cpp
         Boid.hpp
         customEnums.hpp
+        CoordinateTranslator.cpp
+        CoordinateTranslator.hpp
 )
 
 target_link_libraries(Boids2D sfml-graphics sfml-window sfml-system)
