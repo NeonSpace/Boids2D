@@ -24,7 +24,7 @@ public:
 
     sf::RenderWindow& getWindow() const{return window;};
 
-    void init(arrangementType aT, int amount);
+    void init(arrangementType aT, movementType mT, int amount);
 
     std::vector<float> keepInBounds(float x, float y) const;
     std::vector<float> keepInBounds(const std::vector<float> &yx) const;
@@ -36,6 +36,8 @@ private:
     int width, height, amount = 0;
     std::vector<Boid> boids;
     sf::RenderWindow& window;
+    arrangementType aT;
+    movementType mT;
 };
 
 #endif //SIMULATION2D_HPP

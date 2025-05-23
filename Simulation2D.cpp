@@ -13,7 +13,10 @@ Simulation2D::Simulation2D(int width, int height, sf::RenderWindow &window): win
     this->height = height;
 }
 
-void Simulation2D::init(arrangementType aT, int amount) {
+void Simulation2D::init(arrangementType aT, movementType mT, int amount) {
+    this->mT = mT;
+    this->aT = aT;
+    this->amount = amount;
     boids.resize(amount);
 
     switch (aT) {
@@ -88,48 +91,35 @@ void Simulation2D::init(arrangementType aT, int amount) {
 }
 
 void Simulation2D::evolve() {
-    /*for (int i = 0; i < boids.size(); i++) {
-        float newPosX = 0;
-        float newPosY = 0;
-        float posChange= 0.05;
-        if (boids.at(i).getPos().x+posChange > width) {
-            newPosX = width - boids.at(i).getPos().x+posChange;
-        }else {
-            newPosX = boids.at(i).getPos().x+posChange;
-        }
-        if (boids.at(i).getPos().y+posChange > height) {
-            newPosY = height - boids.at(i).getPos().y+posChange;
-        }else {
-            newPosY = boids.at(i).getPos().y+posChange;
-        }
-        boids.at(i).setPos(sf::Vector2f(newPosX, newPosY));
-    }*/
-/*
-    for (int i = 0; i < boids.size(); i++) {
-        float newPosX = 0;
-        float newPosY = 0;
-        float posChangeX= -1 + 2*static_cast<float>(rand()) / RAND_MAX;
-        float posChangeY= -1 + 2*static_cast<float>(rand()) / RAND_MAX;
+    switch (mT) {
+        case movementType::rand: {
+            for (int i = 0; i < boids.size(); i++) {
+                float newPosX = 0;
+                float newPosY = 0;
+                float posChangeX= -1 + 2*static_cast<float>(rand()) / RAND_MAX;
+                float posChangeY= -1 + 2*static_cast<float>(rand()) / RAND_MAX;
 
-        if (boids.at(i).getPos().x+posChangeX > width) {
-            newPosX = width - boids.at(i).getPos().x+posChangeX;
-        }else if (boids.at(i).getPos().x+posChangeX < 0) {
-            newPosX = width + boids.at(i).getPos().x+posChangeX;
+                newPosX = boids.at(i).getPos().x+posChangeX;
+                newPosY = boids.at(i).getPos().y+posChangeY;
+                vector<float> flow = keepInBounds(newPosY, newPosX);
+                boids.at(i).setPos(sf::Vector2f(flow.at(0), flow.at(1)));
+            }
+            break;
         }
-        else {
-            newPosX = boids.at(i).getPos().x+posChangeX;
-        }
+        default: { //lin movement
+            for (int i = 0; i < boids.size(); i++) {
+                float newPosX = 0;
+                float newPosY = 0;
+                float posChange= 0.05;
 
-        if (boids.at(i).getPos().y+posChangeY > height) {
-            newPosY = height - boids.at(i).getPos().y+posChangeY;
-        }else if (boids.at(i).getPos().y+posChangeY < 0) {
-            newPosY = height + boids.at(i).getPos().y+posChangeY;
+                newPosX = boids.at(i).getPos().x+posChange;
+                newPosY = boids.at(i).getPos().y;
+                vector<float> flow = keepInBounds(newPosY, newPosX);
+                boids.at(i).setPos(sf::Vector2f(flow.at(0), flow.at(1)));
+            }
+
         }
-        else{
-            newPosY = boids.at(i).getPos().y+posChangeY;
-        }
-        boids.at(i).setPos(sf::Vector2f(newPosX, newPosY));
-    }*/
+    }
 }
 
 void Simulation2D::draw(float radius) {

@@ -4,11 +4,17 @@
 #include "Simulation2D.hpp"
 
 int main() {
+    constexpr float width = 1000;
+    constexpr float height = 1000;
+    int amount = 5;
+    float radius = 10;
+    arrangementType aT = arrangementType::rand;
+    movementType mT = movementType::linear;
 
-    sf::RenderWindow window(sf::VideoMode(1000, 1000), "Boid Simulation");
-    Simulation2D sim = Simulation2D(1000,1000,window);
+    sf::RenderWindow window(sf::VideoMode( width, height), "Boid Simulation");
+    Simulation2D sim = Simulation2D( width, height, window);
 
-    sim.init(arrangementType::rand, 1000);
+    sim.init(aT, mT, amount);
 
     while (window.isOpen()) {
         sf::Event event{};
@@ -19,7 +25,7 @@ int main() {
 
         sim.evolve();
         window.clear(sf::Color::Black);
-        sim.draw(10);
+        sim.draw(radius);
 
         window.display();
     }
