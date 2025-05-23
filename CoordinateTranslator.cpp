@@ -4,6 +4,7 @@
 
 #include "CoordinateTranslator.hpp"
 
+#include <complex>
 #include <utility>
 #include "customEnums.hpp"
 using namespace std;
@@ -15,28 +16,30 @@ CoordinateTranslator::CoordinateTranslator(enum coordinateType cT, float baseInW
 }
 
 std::vector<float> CoordinateTranslator::translate(std::vector<float> newRealtivePosition) {
-    this->posInWindow = std::move(newRealtivePosition);
+    //if polar:  newRealtivePosition[0] = radius , newRealtivePosition[1] = angle
+    //if cartesian:  newRealtivePosition[0] = y , newRealtivePosition[1] = x
+    //return is always cartesian to window base
+
+    std::vector<float> newPosInWindow;
     switch (coordinateType) {
         case coordinateType::polar: {
-
-
-
-            break;
+            newPosInWindow[0] = newRealtivePosition[0] * cos(newRealtivePosition[1]) + posInWindow[0];
+            newPosInWindow[1] = newRealtivePosition[0] * sin(newRealtivePosition[1]) + posInWindow[1];
+            return newPosInWindow;
         }
         default:{ // coordinateType::cartesian: {
-
-
-
-            break;
+            newPosInWindow[0] = newRealtivePosition[0] + posInWindow[0];
+            newPosInWindow[1] = newRealtivePosition[1] + posInWindow[1];
+            return newPosInWindow;
         }
     }
 }
 
 std::vector<float> CoordinateTranslator::translate(float newRelativeX, float newRelativeY) {
-    std::vector<float> realtivePosition;
-    realtivePosition.push_back(newRelativeY);
-    realtivePosition.push_back(newRelativeX);
-    return this->translate(realtivePosition);
+    std::vector<float> relativePosition;
+    relativePosition.push_back(newRelativeY);
+    relativePosition.push_back(newRelativeX);
+    return this->translate(relativePosition);
 }
 
 void CoordinateTranslator::setNewBase(float baseInWindowX, float baseInWindowY) {
