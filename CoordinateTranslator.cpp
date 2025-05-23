@@ -10,7 +10,7 @@
 using namespace std;
 
 CoordinateTranslator::CoordinateTranslator(enum coordinateType cT, float baseInWindowX, float baseInWindowY) {
-    this->coordinateType = cT;
+    this->cT = cT;
     this->posInWindow[0] = baseInWindowY;
     this->posInWindow[1] = baseInWindowX;
 }
@@ -21,7 +21,7 @@ std::vector<float> CoordinateTranslator::translate(std::vector<float> newRealtiv
     //return is always cartesian to window base
 
     std::vector<float> newPosInWindow;
-    switch (coordinateType) {
+    switch (cT) {
         case coordinateType::polar: {
             newPosInWindow[0] = newRealtivePosition[0] * cos(newRealtivePosition[1]) + posInWindow[0];
             newPosInWindow[1] = newRealtivePosition[0] * sin(newRealtivePosition[1]) + posInWindow[1];

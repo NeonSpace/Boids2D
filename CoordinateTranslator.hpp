@@ -23,7 +23,7 @@ public:
 
 private:
     std::vector<float> posInWindow;
-    coordinateType coordinateType = coordinateType::cartesian;
+    coordinateType cT = coordinateType::cartesian;
 };
 
 #endif //COORDINATETRANSLATOR_HPP
