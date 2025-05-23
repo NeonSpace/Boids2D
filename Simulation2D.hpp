@@ -26,6 +26,8 @@ public:
 
     void init(arrangementType aT, int amount);
 
+    std::vector<float> keepInBounds(float x, float y) const;
+    std::vector<float> keepInBounds(const std::vector<float> &yx) const;
 
     void evolve();
     void draw(float radius);

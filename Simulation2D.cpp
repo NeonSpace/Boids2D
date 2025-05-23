@@ -6,6 +6,8 @@
 #include "Simulation2D.hpp"
 #include <SFML/Graphics.hpp>
 
+using namespace std;
+
 Simulation2D::Simulation2D(int width, int height, sf::RenderWindow &window): window(window) {
     this->width = width;
     this->height = height;
@@ -18,8 +20,8 @@ void Simulation2D::init(arrangementType aT, int amount) {
         case arrangementType::rand: {
             for (int i = 0; i < amount; i++) {
                 boids.at(i).setID(i);
-                float fx = static_cast<float>(rand()) / RAND_MAX;
-                float fy = static_cast<float>(rand()) / RAND_MAX;
+                float fx = static_cast<float>(random()) / RAND_MAX;
+                float fy = static_cast<float>(random()) / RAND_MAX;
                 boids.at(i).setPos(sf::Vector2f(fx * width, fy * height));
                 boids.at(i).setVel(sf::Vector2f(0, 0));
             }
@@ -44,7 +46,41 @@ void Simulation2D::init(arrangementType aT, int amount) {
             break;
         }
         case arrangementType::circular: {
+/*
 
+            for (int i = 0; i < amount; i++) {
+                boids.at(i).setID(i);
+            }
+
+            auto calcV1 = [](int x) -> int {
+                //return round(sqrt(2));
+                x++;
+                return x*3;
+            };
+
+            //Calculate Nr of boids per Ring:
+            vector<int> rings;
+            rings.resize(amount);
+            int leftoverAmount = amount;
+            for (int ringNr = 0; ringNr < amount; ringNr++) {
+                int numberOfBoidsOnThisRing = calcV1(ringNr);
+                rings.push_back(numberOfBoidsOnThisRing);
+                leftoverAmount -= numberOfBoidsOnThisRing;
+                if (leftoverAmount <= 0) {
+                    break;
+                }
+            }
+            //Position Boids:
+            float midX = width / 2;
+            float midY = height / 2;
+            leftoverAmount = amount;
+            for (int ringNr = 0; ringNr < rings.size(); ringNr++) {
+                float angleBetweenBoids = 360 / rings.at(ringNr);
+
+
+            }
+
+*/
 
             break;
         }
@@ -106,4 +142,25 @@ void Simulation2D::draw(float radius) {
 
         window.draw(boidShape);
     }
+}
+
+std::vector<float> Simulation2D::keepInBounds(float x, float y) const {
+    if (y > height || y < 0) {
+        y= fmod(y, height);
+        if (y < 0) {
+            y = fabs(y);
+        }
+    }
+    if (x > width || x < 0) {
+        x = fmod(x, width);
+        if (x < 0) {
+            x = fabs(x);
+        }
+    }
+    return std::vector<float>{y, x};
+}
+
+std::vector<float> Simulation2D::keepInBounds(const std::vector<float> &yx) const {
+    return this->keepInBounds(yx.at(1), yx.at(0));
+
 }
